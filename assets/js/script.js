@@ -7,7 +7,7 @@ var createTaskHandler = function(event) {
     var taskNameInput= document.querySelector("input[name='task-name']").value;
     var taskTypeInput= document.querySelector("select[name='task-type']").value;
     
-    console.log(taskTypeInput);
+    
 
     //create list item
     var listItemEl = document.createElement("li");
@@ -19,8 +19,13 @@ var createTaskHandler = function(event) {
     //add HTML content to div
     taskInfoEl.innerHTML = "<h3 class = 'task-name'>" + taskNameInput + "</h3><span class='task-type'>" + taskTypeInput + "</span>";
 
+    console.dir(listItemEl);
+
     listItemEl.appendChild(taskInfoEl);
     //add entire list item to list
     tasksToDoEl.appendChild(listItemEl);
+  
 };
+
+
 formEl.addEventListener("submit", createTaskHandler);
