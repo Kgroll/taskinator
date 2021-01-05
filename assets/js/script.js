@@ -69,14 +69,15 @@ var completeEditTask = function(taskName, taskType, taskId){
        if (tasks[i].id === parseInt(taskId)) {
         tasks[i].name = taskName;
         tasks[i].type = taskType;
-       }
-   };
+       
+    }
+   }
 
    alert("Task Updated!");
    saveTasks();
    formEl.removeAttribute("data-task-id");
    document.querySelector("#save-task").textContent = "Add Task";
-};
+}
 
 var taskFormHandler = function(event) {
     event.preventDefault();
@@ -114,11 +115,7 @@ formEl.reset();
 var createTaskEl = function(taskDataObj) {
      //create list item
     var listItemEl = document.createElement("li");
-    listItemEl.className = "task-item";
-
-
-    console.log(taskDataObj);
-    console.log(taskDataObj.status);
+    listItemEl.className = "task-item";    
 
     //add taks id as a custom attribute
     listItemEl.setAttribute("data-task-id", taskIdCounter);
@@ -221,7 +218,7 @@ var taskButttonHandler = function(event) {
     for (var i = 0; i < tasks.length; i++) {
         //if tasks[i] don't match taskId keep the task ans push it to the new array
         if (tasks[i].id !== parseInt(taskId)) {
-            updatedTaskAarr.push(tasks[i]);
+            updatedTaskArr.push(tasks[i]);
         }
     }        
     }
@@ -280,9 +277,25 @@ var dropTaskHandler = function(event) {
 }
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-
-
 }
+
+var loadTasks = function() {
+    
+    //get tasks from local storage
+    var savedTasks = localStorage.getItem("tasks");
+    if (!savedTasks) {
+        return false;
+    }
+   
+    //convert from strings back to array of objects
+    savedTasks = JSON.parse(savedTasks);    
+    //iterate through a task array and created task elements on page
+    for (var i = 0; i < savedTasks.length; i++) {
+        createTaskEl(savedTasks[i]);
+    }
+    
+    
+};
 
 pageContentEl.addEventListener("click", taskButttonHandler);
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
@@ -290,3 +303,5 @@ pageContentEl.addEventListener("dragstart", dragTaskHandler);
 pageContentEl.addEventListener("dragover", dropZoneDragHandler);
 pageContentEl.addEventListener("drop", dropTaskHandler);
 pageContentEl.addEventListener("dragleave", dragLeaveHandler);
+loadTasks();
+
